@@ -1,0 +1,36 @@
+{
+  "name": "team-original-graceshopper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tsunenori-L/Team-Original-GraceShopper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tsunenori-L/Team-Original-GraceShopper/issues"
+  },
+  "homepage": "https://github.com/Tsunenori-L/Team-Original-GraceShopper#readme",
+  "dependencies": {
+    "chalk": "^2.4.2",
+
+    "axios": "^0.19.0",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "pg": "^7.11.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.10.1"
+  },
+  "devDependencies": {
+    "faker": "^4.1.0",
+    "jest": "^24.8.0",
+    "jest-cli": "^24.8.0"
+  }
+}
