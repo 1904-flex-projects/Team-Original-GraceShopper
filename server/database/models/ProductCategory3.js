@@ -1,12 +1,12 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const ProductCategory3 = db.define('product_category', {
+const ProductCategory3 = db.define('product_category3', {
   pcid: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  category: {
+  name: {
     type: Sequelize.STRING,
     allowNull: false,
   },
