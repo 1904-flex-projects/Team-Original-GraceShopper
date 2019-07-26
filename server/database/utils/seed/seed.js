@@ -5,18 +5,14 @@ const {
   Product,
   Review,
   User,
-  ProductCategory1,
-  ProductCategory2,
-  ProductCategory3,
+  ProductCategory,
 } = require('../../index');
 
 const usersSeed = require('./data/users');
 const userCreator = require('./creators/userCreator');
 const productSeed = require('./data/products');
 const productCreator = require('./creators/productCreator');
-const productcategory1 = require('./data/productcategory1');
-const productcategory2 = require('./data/productcategory2');
-const productcategory3 = require('./data/productcategory3');
+const productcategory = require('./data/productcategory');
 
 const seed = async () => {
   try {
@@ -37,24 +33,10 @@ const seed = async () => {
       })
     );
 
-    console.log('seeding PC1');
+    console.log('seeding Product Categories');
     await Promise.all(
-      productcategory1.map(pc => {
-        return ProductCategory1.create(pc);
-      })
-    );
-
-    console.log('seeding PC2');
-    await Promise.all(
-      productcategory2.map(pc => {
-        return ProductCategory2.create(pc);
-      })
-    );
-
-    console.log('seeding PC3');
-    await Promise.all(
-      productcategory3.map(pc => {
-        return ProductCategory3.create(pc);
+      productcategory.map(pc => {
+        return ProductCategory.create(pc);
       })
     );
 

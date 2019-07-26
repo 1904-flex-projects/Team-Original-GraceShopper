@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const ProductCategory3 = db.define('product_category3', {
+const ProductCategory = db.define('product_category', {
   pcid: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -12,4 +12,4 @@ const ProductCategory3 = db.define('product_category3', {
   },
 });
 
-module.exports = ProductCategory3;
+module.exports = ProductCategory;
