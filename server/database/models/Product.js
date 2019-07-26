@@ -24,21 +24,21 @@ const Product = db.define('product', {
     },
   },
   parent_category_1: {
-    type: Sequelize.TEXT,
+    type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   parent_category_2: {
-    type: Sequelize.TEXT,
+    type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   parent_category_3: {
-    type: Sequelize.TEXT,
+    type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       notEmpty: true,
