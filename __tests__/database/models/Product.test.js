@@ -1,4 +1,3 @@
-require('dotenv').config();
 const { db, Product } = require('../../../server/database/index.js');
 
 beforeAll(async () => {

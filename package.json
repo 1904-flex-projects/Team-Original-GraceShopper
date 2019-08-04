@@ -4,7 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --runInBand",
+    "start": "node server/index.js",
+    "start-server:dev": "./node_modules/.bin/nodemon ./server/index.js",
+    "build": "webpack --mode=\"production\"",
+    "build-watch": "webpack -w",
+    "heroku-postbuild": "npm run build",
+    "dev": "npm run start-server:dev & npm run build-watch",
+    "seed": "node ./server/database/utils/seed/seed.js"
   },
   "repository": {
     "type": "git",
@@ -17,20 +24,38 @@
   },
   "homepage": "https://github.com/Tsunenori-L/Team-Original-GraceShopper#readme",
   "dependencies": {
-    "chalk": "^2.4.2",
-
     "axios": "^0.19.0",
+    "bcrypt": "^3.0.6",
+    "chalk": "^2.4.2",
+    "connect-session-sequelize": "^6.0.0",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "faker": "^4.1.0",
     "morgan": "^1.9.1",
-    "pg": "^7.11.0",
+    "pg": "^7.12.0",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.10.1"
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
+    "react-router-dom": "^5.0.1",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
+    "sequelize": "^5.12.2"
   },
   "devDependencies": {
-    "faker": "^4.1.0",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.8.0",
+    "babel-loader": "^8.0.6",
     "jest": "^24.8.0",
-    "jest-cli": "^24.8.0"
+    "jest-cli": "^24.8.0",
+    "nodemon": "^1.19.1",
+    "redux-logger": "^3.0.6",
+    "webpack": "^4.39.0",
+    "webpack-cli": "^3.3.6"
   }
 }

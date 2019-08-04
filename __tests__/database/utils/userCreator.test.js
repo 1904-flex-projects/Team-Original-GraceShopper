@@ -1,4 +1,3 @@
-require('dotenv').config();
 const { db, User } = require('./../../../server/database/index.js');
 const userCreator = require('./../../../server/database/utils/seed/creators/userCreator');
 
