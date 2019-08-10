@@ -58,7 +58,6 @@ const Admin = props => {
 
   if (!isAdmin) {
     history.push('/error');
-    g;
   }
 
   const renderUsers = () => {

@@ -1,10 +1,13 @@
+import SingleUser from './SingleUser';
 import React from 'react';
+
+import { USERS_CONTAINER } from './styles';
 const AllUsers = props => {
   const { users } = props;
   return (
-    <div>
+    <div style={USERS_CONTAINER}>
       {users.map(user => (
-        <p>{user.email}</p>
+        <SingleUser user={user} />
       ))}
     </div>
   );
