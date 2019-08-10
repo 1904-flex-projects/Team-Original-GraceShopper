@@ -8,7 +8,7 @@ const { signupValidator } = require('./utils/userValidation');
 // Access: private, admin only
 router.get('/', (req, res, next) => {
   if (req.session && req.session.isAdmin) {
-    return User.findAll({ include: [Profile] })
+    return User.findAll({ include: [Profile], order: ['id'] })
       .then(users => res.json(users))
       .catch(next);
   } else {
