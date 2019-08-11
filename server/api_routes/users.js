@@ -174,16 +174,16 @@ router.put('/:id', (req, res, next) => {
       req.body.isAdmin = false;
     }
 
-    return User.findByPk(id)
-      .then(user => {
-        return user.update(req.body);
+    Promise.all([User.findByPk(id), Profile.findOne({ where: { userId: id } })])
+      .then(([user, profile]) => {
+        return Promise.all([
+          user.update(req.body),
+          profile.update(req.body.profile),
+        ]);
       })
-      .then(updatedUser =>
-        res.status(201).json({
-          message: 'User has been successfully updated!',
-          user: updatedUser,
-        })
-      )
+      .then(() => {
+        res.status(201).send({ message: 'success' });
+      })
       .catch(e => {
         console.log(chalk.redBright('Error updating user: '));
         next(e);

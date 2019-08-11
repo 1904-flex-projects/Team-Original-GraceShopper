@@ -5,8 +5,25 @@ import axios from 'axios';
 import { SINGLE_USER_CONTAINER } from './styles';
 const SingleUser = props => {
   const { user } = props;
-  const onSubmit = values => {
-    console.log(values);
+
+  const onSubmit = (values, setValues) => {
+    const updateObj = {
+      id: values.id,
+      profile: { first_name: values.first_name, last_name: values.last_name },
+    };
+    if (values.password) {
+      updateObj.password = values.password;
+    }
+    axios
+      .put(`/api/users/${values.id}`, updateObj)
+      .then(res => {
+        const response = res.data;
+        // clear password in state
+        setValues(vals => ({ ...vals, password: '' }));
+      })
+      .catch(e => {
+        console.error('Error updating user', e);
+      });
   };
 
   const [values, setValues, handleChange, handleSubmit] = useForm(onSubmit, {
@@ -18,21 +35,23 @@ const SingleUser = props => {
   });
 
   useEffect(() => {
-    setValues({
+    setValues(vals => ({
+      ...vals,
       id: user.id,
       email: user.email,
       first_name: user.profile.first_name,
       last_name: user.profile.last_name,
-    });
+      password: '',
+    }));
   }, [user]);
 
   const [editMode, setEditMode] = useState(false);
 
-  const renderStaticorInput = key => {
+  const renderStaticOrInput = (key, type = 'text') => {
     if (editMode) {
       return (
         <input
-          type="text"
+          type={type}
           value={values[key]}
           name={key}
           onChange={handleChange}
@@ -51,6 +70,7 @@ const SingleUser = props => {
             handleSubmit();
             setEditMode(false);
           }}
+          className="btn btn-danger"
         >
           Update
         </button>
@@ -61,6 +81,7 @@ const SingleUser = props => {
         onClick={() => {
           setEditMode(true);
         }}
+        className="btn btn-primary"
       >
         Edit
       </button>
@@ -77,7 +98,7 @@ const SingleUser = props => {
       </div>
       <div style={{ display: 'inline-flex' }}>
         <p>
-          <strong>Email:</strong>{' '}
+          <strong>Email:</strong>
         </p>
         <p>{values.email}</p>
       </div>
@@ -85,20 +106,20 @@ const SingleUser = props => {
         <p>
           <strong>First Name: </strong>
         </p>
-        {renderStaticorInput('first_name')}
+        {renderStaticOrInput('first_name')}
       </div>
       <div style={{ display: 'inline-flex' }}>
         <p>
           <strong>Last Name: </strong>
         </p>
-        {renderStaticorInput('last_name')}
+        {renderStaticOrInput('last_name')}
       </div>
       {editMode ? (
         <div style={{ display: 'inline-flex' }}>
           <p>
             <strong>Change Password:</strong>{' '}
           </p>
-          {renderStaticorInput('password')}
+          {renderStaticOrInput('password', 'password')}
         </div>
       ) : (
         ''
