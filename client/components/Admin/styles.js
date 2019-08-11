@@ -4,11 +4,13 @@ export const NAV_BUTTON = 'btn btn-primary';
 export const NAV_BUTTON_ACTIVE = 'btn btn-success';
 
 export const USERS_CONTAINER = {
+  height: '60vh',
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'wrap',
   justifyContent: 'center',
   alignItems: 'center',
+  overflowY: 'scroll',
 };
 
 export const SINGLE_USER_CONTAINER = {

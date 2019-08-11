@@ -7,7 +7,7 @@ const AllUsers = props => {
   return (
     <div style={USERS_CONTAINER}>
       {users.map(user => (
-        <SingleUser user={user} />
+        <SingleUser key={user.id} user={user} />
       ))}
     </div>
   );

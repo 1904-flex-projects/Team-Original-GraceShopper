@@ -56,9 +56,9 @@ const Admin = props => {
     getProducts();
   }, []);
 
-  if (!isAdmin) {
-    history.push('/error');
-  }
+  // if (!isAdmin) {
+  //   history.push('/error');
+  // }
 
   const renderUsers = () => {
     return (
