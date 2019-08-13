@@ -7,7 +7,7 @@ afterAll(async () => {
   await db.close();
 });
 
-describe('adding a product', () => {
+xdescribe('adding a product', () => {
   const prodObj = {
     sku: '1123',
     name: 'Intel CPU',

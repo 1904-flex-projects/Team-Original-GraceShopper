@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { User } = require('./../../../index.js');
+const { User, Cart } = require('./../../../index.js');
 const faker = require('faker');
 
 const userCreator = (userObj = {}) => {
@@ -11,6 +11,11 @@ const userCreator = (userObj = {}) => {
   // if userObj is empty a user with default values will be created
   // if userObj has entries they will overwrite the defaults
   const user = Object.assign({}, { email, password, isAdmin }, userObj);
-  return User.create(user);
+  return User.create(user).then(user => {
+    // return Cart.create({ userId: user.id }).then(res => {
+    //   return res;
+    // });
+    return user;
+  });
 };
 module.exports = userCreator;

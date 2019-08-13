@@ -14,14 +14,17 @@ export const logoutUser = () => {
 };
 
 import { changeLoginStatus } from './isLoggedInCreators';
+import { clearCart, getCartThunk } from './cartCreators';
 // thunks
 export const loginThunk = (email, password) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     return axios
       .post('/api/users/login', { email, password })
       .then(res => {
         const user = res.data;
-        // clear error if login is successful
+        const { cart } = getState();
+        dispatch(getCartThunk(cart));
+
         dispatch(gotUser({ ...user, error: '' }));
         dispatch(changeLoginStatus(true));
       })
@@ -31,4 +34,18 @@ export const loginThunk = (email, password) => {
         dispatch(gotUser({ error: 'Invalid login credentials' }));
       });
   };
+};
+
+export const logoutThunk = () => {
+  return dispatch =>
+    axios
+      .post('/api/users/logout')
+      .then(() => {
+        dispatch(logoutUser());
+        // clear cart
+        dispatch(clearCart());
+      })
+      .catch(e => {
+        throw new Error('log out error');
+      });
 };

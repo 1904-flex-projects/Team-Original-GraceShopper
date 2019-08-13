@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { PRODUCT_NAV_CONTAINER, ACTIVE_CAT_LINK } from './Styles';
+import { ACTIVE_CAT_LINK } from './Styles';
 
 const ProductNav = props => {
   const { allCategories, params } = props;
@@ -26,18 +26,23 @@ const ProductNav = props => {
           :
         </p>
       );
-      const currentLevelCats = allCategories[`pc${i + 1}`];
+
+      let currentLevelCats = allCategories[`pc${i + 1}`];
+
       const currentCatObj = currentLevelCats.find(
         cat => cat[`pcid${i + 1}`] === parseInt(currentCatId, 10)
       );
       let currentCatName = '';
-      if (currentLevelCats.length) {
+
+      // need to check if currentCatObj exists as well b/c of async calls to get allCategories
+      if (currentLevelCats.length && currentCatObj) {
         currentCatName = currentCatObj[`name${i + 1}`];
       }
 
       currentPath += `/${currentCatId}`;
       categoryChain.push(
         <NavLink
+          className=" nav-link-active"
           key={`cat_${i + 1}`}
           exact
           to={currentPath}
@@ -51,7 +56,11 @@ const ProductNav = props => {
     return categoryChain;
   };
 
-  return <div style={PRODUCT_NAV_CONTAINER}>{renderCategoryChain()}</div>;
+  return (
+    <div style={{ lineHeight: '2.5' }} className="nav bg-dark text-white">
+      {renderCategoryChain()}
+    </div>
+  );
 };
 
 export default ProductNav;

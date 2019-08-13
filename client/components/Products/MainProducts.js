@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getNextTierCategories, gotUpdatedCats } from '../../redux';
-
+import { Link } from 'react-router-dom';
 import ProductNav from './ProductNav';
 import CurrentCategories from './CurrentCategories';
+import ProductCard from './ProductCard';
 
 const MainProducts = props => {
   const {
@@ -73,7 +73,7 @@ const MainProducts = props => {
   );
 
   useEffect(() => {
-    // only grab next tier if not at the highest level
+    // only grab next tier if not at the deepest level
     // and not at the root level
     if (Object.keys(params).length && nextPcLevel <= 3) {
       getNextTier(path);
@@ -84,18 +84,22 @@ const MainProducts = props => {
   }, [location.pathname]); // rerender everytime the path changes
 
   return (
-    <div>
-      <h2>Products Page</h2>
+    <div id="main-products-container">
       <ProductNav allCategories={allCategories} params={params} />
       <CurrentCategories
         currentCategories={currentCategories}
         location={location}
         nextPcLevel={nextPcLevel}
       />
-
-      {currentProducts.map(prod => {
-        return <p>{prod.name}</p>;
-      })}
+      <div id="products-container">
+        {currentProducts.map(prod => {
+          return (
+            <Link key={prod.id} to={`/products/single/${prod.id}`}>
+              <ProductCard product={prod} />
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 };

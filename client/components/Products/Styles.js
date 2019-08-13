@@ -19,4 +19,7 @@ export const ACTIVE_CAT_LINK = {
   color: 'currentColor',
   pointerEvents: 'none',
   textDecoration: 'none',
+  lineHeight: '2.5',
 };
+
+export const BUTTON_CLASSES_PRIMARY = 'btn btn-primary';

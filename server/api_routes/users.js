@@ -2,11 +2,13 @@ const router = require('express').Router();
 const { User, Profile, Session } = require('../database/index.js');
 const chalk = require('chalk');
 
+const { signupValidator } = require('./utils/userValidation');
+
 // GET to api/users/
 // Access: private, admin only
 router.get('/', (req, res, next) => {
   if (req.session && req.session.isAdmin) {
-    return User.findAll()
+    return User.findAll({ include: [Profile], order: ['id'] })
       .then(users => res.json(users))
       .catch(next);
   } else {
@@ -21,7 +23,6 @@ router.post('/login', (req, res, next) => {
   if (!email || !password) {
     return res.status(401).json({ error: 'Invalid login credentials' });
   }
-  // returns user and
   User.authenticate(email, password)
     .then(user => {
       req.session.user = {
@@ -38,6 +39,7 @@ router.post('/login', (req, res, next) => {
           user_id: user.user_id,
         });
       });
+      return Promise.resolve();
     })
     .catch(next);
 });
@@ -47,7 +49,7 @@ router.post('/login', (req, res, next) => {
 router.post('/logout', (req, res, next) => {
   // save cart to db
   req.session.destroy(() => {
-    res.send('user logged out');
+    res.status(200).send({ message: 'successfully logged out' });
   });
 });
 
@@ -69,6 +71,48 @@ router.get('/checklogin', (req, res, next) => {
     res.sendStatus(204);
   }
 });
+
+// POST to api/users/signup
+// Access: public
+router.post('/signup', (req, res, next) => {
+  const [errorsResponse, isValid] = signupValidator(req.body);
+  if (!isValid) {
+    return res.status(400).send({ errorsResponse });
+  }
+  const { email, password1 } = req.body;
+  User.findOrCreate({ where: { email }, defaults: { password: password1 } })
+    .then(userAndCreated => {
+      const user = userAndCreated[0];
+      const wasCreated = userAndCreated[1];
+      if (!wasCreated) {
+        errorsResponse.email = 'email already taken';
+        return res.status(400).send({ errorsResponse });
+      } else {
+        return Promise.all([user, Profile.create(req.body)]);
+      }
+    })
+    .then(([user, profile]) => {
+      return profile.update({ userId: user.id });
+    })
+    .then(() => {
+      return res.status(200).send({ message: 'successfully created new user' });
+    })
+    .catch(e => {
+      next(e);
+      const errorsFromSequelize = e.errors;
+      if (errorsFromSequelize.some(error => error.path === 'email')) {
+        errorsResponse.email = 'invalid email';
+      }
+      if (errorsFromSequelize.some(error => error.path === 'password')) {
+        errorsResponse.password = 'password can not be empty';
+      }
+      if (Object.keys(errorsResponse).length) {
+        return res.status(400).send({ errorsResponse });
+      }
+      next(e);
+    });
+});
+
 // GET to api/users/:id
 // Access: private, admin only
 router.get('/:id', (req, res, next) => {
@@ -130,16 +174,16 @@ router.put('/:id', (req, res, next) => {
       req.body.isAdmin = false;
     }
 
-    return User.findByPk(id)
-      .then(user => {
-        return user.update(req.body);
+    Promise.all([User.findByPk(id), Profile.findOne({ where: { userId: id } })])
+      .then(([user, profile]) => {
+        return Promise.all([
+          user.update(req.body),
+          profile.update(req.body.profile),
+        ]);
       })
-      .then(updatedUser =>
-        res.status(201).json({
-          message: 'User has been successfully updated!',
-          user: updatedUser,
-        })
-      )
+      .then(() => {
+        res.status(201).send({ message: 'success' });
+      })
       .catch(e => {
         console.log(chalk.redBright('Error updating user: '));
         next(e);

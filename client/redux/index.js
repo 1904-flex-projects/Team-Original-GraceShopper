@@ -16,3 +16,4 @@ export default store;
 export * from './actionCreators/currentUserCreators';
 export * from './actionCreators/isLoggedInCreators';
 export * from './actionCreators/productsCreators';
+export * from './actionCreators/cartCreators';

@@ -1,13 +1,5 @@
 // seed shit here
-const {
-  db,
-  Profile,
-  Product,
-  Review,
-  User,
-  ProductCategory,
-  Brand,
-} = require('../../index');
+const { db, Profile, User, ProductCategory, Brand } = require('../../index');
 
 const usersSeed = require('./data/users');
 const userCreator = require('./creators/userCreator');
@@ -44,6 +36,7 @@ const seed = async () => {
         return productCreator(products);
       })
     );
+
     console.log('seeding profiles');
     const users = await User.findAll();
     for (let i = 0; i < users.length; i++) {

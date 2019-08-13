@@ -1,18 +1,18 @@
 import React, { Fragment } from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { changeLoginStatus, logoutUser } from './../../../redux';
+import { changeLoginStatus, logoutThunk } from './../../../redux';
 
-import { NAV_LINK } from './../styles';
+import { NAV_LINK, BUTTON_CLASSES_SUCCESS } from './../styles';
 
 const handleLoginClick = (isLoggedIn, changeStatus, logOut) => {
   if (isLoggedIn) {
     console.log('run logout routine');
     changeStatus(false);
     logOut();
+    window.location.replace('/'); //Logging out reloads to home page
   }
-  // only for testing. delete when login page is up
 };
 
 const renderLogin = (isLoggedIn, changeStatus, logOut) => {
@@ -26,7 +26,7 @@ const renderLogin = (isLoggedIn, changeStatus, logOut) => {
       style={NAV_LINK}
       onClick={() => handleLoginClick(isLoggedIn, changeStatus, logOut)}
     >
-      <button>{loginStatus}</button>
+      <button className={BUTTON_CLASSES_SUCCESS}>{loginStatus}</button>
     </NavLink>
   );
 };
@@ -37,8 +37,8 @@ const LoginLink = props => {
   return (
     <Fragment>
       {isLoggedIn ? (
-        <p style={{ margin: 0, ...NAV_LINK }}>
-          {`Welcome, ${user.profile.first_name} `}
+        <p style={{ margin: 10, ...NAV_LINK }}>
+          {`Welcome, ${user.profile.first_name} !`}
         </p>
       ) : (
         ''
@@ -57,7 +57,7 @@ const mapDispatch = dispatch => ({
     dispatch(changeLoginStatus(status));
   },
   logOut: () => {
-    [dispatch(logoutUser())];
+    dispatch(logoutThunk());
   },
 });
 

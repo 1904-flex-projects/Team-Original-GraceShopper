@@ -7,7 +7,7 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const app = express();
 
 const publicPath = path.join(__dirname, './public');
-const { db, Session } = require('./database');
+const { db } = require('./database');
 
 const morganMode = process.env.NODE_ENV === 'production' ? 'tiny' : 'dev';
 app.use(morgan(morganMode));

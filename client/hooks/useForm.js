@@ -17,7 +17,7 @@ const useForm = (onSubmit, initialState) => {
       evt.preventDefault();
     }
     console.log('handling submit');
-    onSubmit(values);
+    onSubmit(values, setValues);
   };
 
   return [values, setValues, handleChange, handleSubmit];

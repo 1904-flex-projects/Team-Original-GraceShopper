@@ -35,7 +35,7 @@ User.beforeCreate(async user => {
   try {
     user.password = await hashPw(user.password);
   } catch (e) {
-    console.error('Error creating pw hash', e);
+    throw new Error('Error hashing password');
   }
 });
 
@@ -52,7 +52,7 @@ User.beforeUpdate(async user => {
       user.password = await hashPw(incomingPw);
     }
   } catch (e) {
-    console.error('Error updating password', e);
+    throw new Error('Error updating password');
   }
 });
 
@@ -67,7 +67,6 @@ User.authenticate = function(email, password) {
       return Promise.all([comparePw(password, user.password), user]);
     })
     .then(([isValid, user]) => {
-      console.log(user);
       if (isValid) {
         return {
           user_id: user.id,
